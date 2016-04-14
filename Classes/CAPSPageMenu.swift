@@ -472,7 +472,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         selectionIndicatorView = UIImageView(frame: selectionIndicatorFrame)
         
         if let img = SelectionIndicatorImage {
-            selectionIndicatorView.image = SelectionIndicatorImage
+            selectionIndicatorView.image = img
             selectionIndicatorView.contentMode = .ScaleAspectFit
         }
         
@@ -484,6 +484,8 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
             let leadingAndTrailingMargin = self.getMarginForMenuItemWidthBasedOnTitleTextWidthAndCenterMenuItems()
             selectionIndicatorView.frame = CGRectMake(leadingAndTrailingMargin, menuHeight - selectionIndicatorHeight, menuItemWidths[0], selectionIndicatorHeight)
         }
+        
+        moveSelectionIndicator(0)
     }
     
     // Adjusts the menu item frames to size item width based on title text width and center all menu items in the center
