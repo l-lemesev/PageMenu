@@ -82,6 +82,7 @@ public enum CAPSPageMenuOption {
     case ScrollAnimationDurationOnMenuItemTap(Int)
     case CenterMenuItems(Bool)
     case HideTopMenuBar(Bool)
+    case SelectionIndicatorImage(UIImage)
 }
 
 public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
@@ -103,7 +104,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     var startingMenuMargin : CGFloat = 0.0
     var menuItemMargin : CGFloat = 0.0
     
-    var selectionIndicatorView : UIView = UIView()
+    var selectionIndicatorView : UIImageView = UIImageView()
     
     var currentPageIndex : Int = 0
     var lastPageIndex : Int = 0
@@ -128,6 +129,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     public var centerMenuItems : Bool = false
     public var enableHorizontalBounce : Bool = true
     public var hideTopMenuBar : Bool = false
+    public var SelectionIndicatorImage: UIImage?
     
     var currentOrientationIsPortrait : Bool = true
     var pageIndexForOrientationChange : Int = 0
@@ -155,12 +157,12 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     // MARK: - View life cycle
     
     /**
-    Initialize PageMenu with view controllers
-    
-    :param: viewControllers List of view controllers that must be subclasses of UIViewController
-    :param: frame Frame for page menu view
-    :param: options Dictionary holding any customization options user might want to set
-    */
+     Initialize PageMenu with view controllers
+     
+     :param: viewControllers List of view controllers that must be subclasses of UIViewController
+     :param: frame Frame for page menu view
+     :param: options Dictionary holding any customization options user might want to set
+     */
     public init(viewControllers: [UIViewController], frame: CGRect, options: [String: AnyObject]?) {
         super.init(nibName: nil, bundle: nil)
         
@@ -223,6 +225,8 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
                     centerMenuItems = value
                 case let .HideTopMenuBar(value):
                     hideTopMenuBar = value
+                case let .SelectionIndicatorImage(value):
+                    SelectionIndicatorImage = value
                 }
             }
             
@@ -242,16 +246,16 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-	
-	// MARK: - Container View Controller
-	public override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
-		return true
-	}
-	
-	public override func shouldAutomaticallyForwardRotationMethods() -> Bool {
-		return true
-	}
-	
+    
+    // MARK: - Container View Controller
+    public override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
+        return true
+    }
+    
+    public override func shouldAutomaticallyForwardRotationMethods() -> Bool {
+        return true
+    }
+    
     // MARK: - UI Setup
     
     func setUpUserInterface() {
@@ -465,7 +469,13 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
             }
         }
         
-        selectionIndicatorView = UIView(frame: selectionIndicatorFrame)
+        selectionIndicatorView = UIImageView(frame: selectionIndicatorFrame)
+        
+        if let img = SelectionIndicatorImage {
+            selectionIndicatorView.image = SelectionIndicatorImage
+            selectionIndicatorView.contentMode = .ScaleAspectFit
+        }
+        
         selectionIndicatorView.backgroundColor = selectionIndicatorColor
         menuScrollView.addSubview(selectionIndicatorView)
         
@@ -965,10 +975,10 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     // MARK: - Move to page index
     
     /**
-    Move to page at index
-    
-    :param: index Index of the page to move to
-    */
+     Move to page at index
+     
+     :param: index Index of the page to move to
+     */
     public func moveToPage(index: Int) {
         if index >= 0 && index < controllerArray.count {
             // Update page if changed
