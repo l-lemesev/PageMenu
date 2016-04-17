@@ -90,7 +90,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     // MARK: - Properties
     
     let menuScrollView = UIScrollView()
-    let controllerScrollView = UIScrollView()
+    public let controllerScrollView = UIScrollView()
     var controllerArray : [UIViewController] = []
     var menuItems : [MenuItemView] = []
     var menuItemWidths : [CGFloat] = []
@@ -328,6 +328,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     }
     
     func configureUserInterface() {
+        
         // Add tap gesture recognizer to controller scroll view to recognize menu item selection
         let menuItemTapGestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleMenuItemTap:"))
         menuItemTapGestureRecognizer.numberOfTapsRequired = 1
@@ -360,10 +361,10 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         var index : CGFloat = 0.0
         
         for controller in controllerArray {
-            if index == 0.0 {
-                // Add first two controllers to scrollview and as child view controller
-                addPageAtIndex(0)
-            }
+            //            if index == 0.0 {
+            //                // Add first two controllers to scrollview and as child view controller
+            //                addPageAtIndex(0)
+            //            }
             
             // Set up menu item for menu scroll view
             var menuItemFrame : CGRect = CGRect()
@@ -988,6 +989,9 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         // http://stackoverflow.com/questions/15490140/auto-layout-error
         //
         // Given the SO answer and caveats presented there, we'll call layoutIfNeeded() instead.
+        
+        addPageAtIndex(0)
+        
         self.view.layoutIfNeeded()
     }
     
