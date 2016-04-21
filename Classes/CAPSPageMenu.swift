@@ -639,6 +639,8 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
                             lastPageIndex = currentPageIndex
                             currentPageIndex = page
                             
+                            correctMenuSrollPosition()
+                            
                             if pagesAddedDictionary[page] != page && page < controllerArray.count && page >= 0 {
                                 addPageAtIndex(page)
                                 pagesAddedDictionary[page] = page
@@ -706,7 +708,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
             
             // Empty out pages in dictionary
             pagesAddedDictionary.removeAll(keepCapacity: false)
-            correctMenuSrollPosition()
+            //            correctMenuSrollPosition()
         }
     }
     
